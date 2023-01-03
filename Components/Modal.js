@@ -1,11 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 const Modal = ({children}) => {
     return (
-        <>
-        {children}
-        </>
+        <Pressable style={{backgroundColor: "green"}}>
+        <View>
+            {children}
+        </View>  
+       </Pressable>
     );
 }
-
-  export default Modal;
+export default Modal;
