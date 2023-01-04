@@ -1,8 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const Modal = (props) => {
-    
+
+//Modal animation state
+const [hideModal, setHideModal] = useState(!props.isOpen);
+
 const fadeAnim = useRef(new Animated.Value(0)).current;
 const translateAnim = useRef(new Animated.Value(30)).current;
 
@@ -26,29 +29,35 @@ const translateAnim = useRef(new Animated.Value(30)).current;
     Animated.timing(fadeAnim, {
       useNativeDriver: true,
       toValue: 0,
-      duration: 0,
+      duration: 300,
     }).start();
 
     Animated.timing(translateAnim, {
         useNativeDriver: true,
         toValue: 30,
-        duration: 0,
+        duration: 300,
     }).start();
   };    
 
     useEffect(() => {
         if (props.isOpen) {
+            setHideModal(false);
             fadeIn();
         } else {
             fadeOut();
+            //Set interval to wait for animation to finish before hiding modal
+            setTimeout(() => {
+                setHideModal(true);
+            }
+            , 300);
         }
     }, [props.isOpen]);
 
     
     return (
-    <Animated.View style={ props.isOpen ? {...styles.background, ...styles.show, opacity: fadeAnim} : {...styles.background, opacity:fadeAnim, ...styles.hide, opacity: fadeAnim}}>
+    <Animated.View style={ !hideModal ? {...styles.background, ...styles.show, opacity: fadeAnim} : {...styles.background, opacity:fadeAnim, ...styles.hide, opacity: fadeAnim}}>
         <Pressable onPress={() => props.handleClose(!props.isOpen)} style={styles.pressableArea}></Pressable>
-        <Animated.View style={{...styles.windowHolder, transform:[{translateY:translateAnim}]}}>
+        <Animated.View style={{...styles.windowHolder, transform:[{translateY:translateAnim}, {perspective: 1000}]}}>
             <View style={{...styles.window, ...props.style}}>
                 {props.children}
             </View>
