@@ -12,9 +12,10 @@ const Carousel = (props) => {
             <ScrollView
                 horizontal // Change the direction to horizontal
                 pagingEnabled // Enable paging
-                decelerationRate={0} // Disable deceleration
+                decelerationRate={0.9} // Disable deceleration
+                disableIntervalMomentum={true}
                 snapToInterval={CARD_WIDTH + 10} // Calculate the size for a card including marginLeft and marginRight
-                snapToAlignment='center' // Snap to the center
+                //snapToAlignment='center' // Snap to the center
                 contentInset={{ // iOS ONLY
                     top: 0,
                     left: SPACING_FOR_CARD_INSET, //SPACING_FOR_CARD_INSET, // Left spacing for the very first card
@@ -22,7 +23,7 @@ const Carousel = (props) => {
                     right: SPACING_FOR_CARD_INSET, //SPACING_FOR_CARD_INSET // Right spacing for the very last card
                 }}
                 contentContainerStyle={{ // contentInset alternative for Android
-                    marginHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0 // Horizontal spacing before and after the ScrollView
+                    paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0 // Horizontal spacing before and after the ScrollView
                 }}
                 style={styles.carousel}>
                 <View style={styles.carouselItem}>
