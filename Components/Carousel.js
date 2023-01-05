@@ -7,15 +7,25 @@ const SPACING_FOR_CARD_INSET = Dimensions.get('window').width * 0.1 - 10;
 
 const Carousel = (props) => {
 
+    //Scrollview ref
+    const scrollViewRef = useRef();
+
+    useEffect(() => {
+        //ScrollTo the first item
+        scrollViewRef.current.scrollTo({ x: -SPACING_FOR_CARD_INSET, y: 0, animated: false});
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView
+            <ScrollView 
+                ref={scrollViewRef}
                 horizontal // Change the direction to horizontal
                 pagingEnabled // Enable paging
                 decelerationRate={0.9} // Disable deceleration
                 disableIntervalMomentum={true}
                 snapToInterval={CARD_WIDTH + 10} // Calculate the size for a card including marginLeft and marginRight
-                //snapToAlignment='center' // Snap to the center
+                snapToAlignment={Platform.OS === 'ios' ? 'center' : 'start'} // Snap to the center
+                snapToStart={true}
                 contentInset={{ // iOS ONLY
                     top: 0,
                     left: SPACING_FOR_CARD_INSET, //SPACING_FOR_CARD_INSET, // Left spacing for the very first card
