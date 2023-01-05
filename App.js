@@ -11,10 +11,11 @@ export default function App() {
   return (
     <View style={styles.container}>
 
-      <Carousel width={300} height={200}>
+      <Carousel weight={300} height={200}>
 
-        <ImageBackground style={{width: "100%", height: "100%", justifyContent: "center"}} resizeMode={'cover'} source={require('./assets/adaptive-icon.png')}>
-          <Text style={{fontSize: "25", textAlign:"center"}}>1</Text>
+        <ImageBackground style={{ width: "100%", height: "100%", justifyContent: "center" }} resizeMode={'cover'} source={require('./assets/adaptive-icon.png')}>
+          <Text style={{ fontSize: 25, textAlign: "center" }}>KORTET</Text>
+          <Text style={{ textAlign: "center" }}> Detta är det bästa kortet.</Text>
         </ImageBackground>
         <Text>2</Text>
         <Text>1</Text>

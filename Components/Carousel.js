@@ -5,27 +5,27 @@ let CARD_WIDTH = Dimensions.get('window').width * 0.8;
 let CARD_HEIGHT = Dimensions.get('window').height * 0.7;
 let SPACING_FOR_CARD_INSET = Dimensions.get('window').width * 0.1 - 10;
 
-const Carousel = ({children, width, height}) => {
+const Carousel = ({ children, width, height }) => {
     //Scrollview ref
     const scrollViewRef = useRef();
 
     CARD_WIDTH = width || CARD_WIDTH;
     CARD_HEIGHT = height || CARD_HEIGHT;
-    SPACING_FOR_CARD_INSET =  (Dimensions.get('window').width - width)/2  || SPACING_FOR_CARD_INSET;
+    SPACING_FOR_CARD_INSET = (Dimensions.get('window').width - width) / 2 || SPACING_FOR_CARD_INSET;
 
     useEffect(() => {
         //ScrollTo the first item on start
-        scrollViewRef.current.scrollTo({ x: -SPACING_FOR_CARD_INSET, y: 0, animated: false});
+        scrollViewRef.current.scrollTo({ x: -SPACING_FOR_CARD_INSET, y: 0, animated: false });
     }, []);
 
     return (
-        <SafeAreaView style={{...styles.container, height:CARD_HEIGHT+30}}>
-            <ScrollView 
+        <SafeAreaView style={{ ...styles.container, height: CARD_HEIGHT + 30 }}>
+            <ScrollView
                 ref={scrollViewRef}
                 horizontal // Change the direction to horizontal
                 pagingEnabled // Enable paging
                 decelerationRate={0.9} // Disable deceleration
-                width = {"100%"}
+                width={"100%"}
                 disableIntervalMomentum={true}
                 snapToInterval={CARD_WIDTH + 10} // Calculate the size for a card including marginLeft and marginRight
                 snapToAlignment={Platform.OS === 'ios' ? 'center' : 'start'} // Snap to the center
@@ -39,16 +39,16 @@ const Carousel = ({children, width, height}) => {
                 contentContainerStyle={{ // contentInset alternative for Android
                     paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0 // Horizontal spacing before and after the ScrollView
                 }}
-                style={{...styles.carousel, paddingTop:5}}>
-                
-                {children.map((item, index) => 
-                    <View key={index} alt={index} style={{...styles.carouselItem, width: CARD_WIDTH, height: CARD_HEIGHT}}>
+                style={{ ...styles.carousel, paddingTop: 5 }}>
+
+                {children.map((item, index) =>
+                    <View key={index} alt={index} style={{ ...styles.carouselItem, width: CARD_WIDTH, height: CARD_HEIGHT }}>
                         <View style={styles.carouselItemInner}>
                             {item}
-                            
+
                         </View>
                     </View>
-                )}   
+                )}
             </ScrollView>
         </SafeAreaView>
     );
@@ -63,14 +63,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         scrollBarWidth: 0,
     },
-    carousel: {
-    
-        
-    },
     carouselItem: {
         justifyContent: 'center',
         alignItems: 'center',
         margin: 5,
+
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -78,7 +75,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.23,
         shadowRadius: 4,
-        elevation: 15,
+        elevation: 1,
     },
     carouselItemInner: {
         overflow: 'hidden',
@@ -88,9 +85,5 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    carouselItemText: {
-        color: 'white',
-        fontSize: 20,
-    },
+    }
 });
