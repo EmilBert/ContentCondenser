@@ -7,6 +7,7 @@ const Modal = ({ isOpen, handleClose, style, children }) => {
     const [hideModal, setHideModal] = useState(!isOpen);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const translateAnim = useRef(new Animated.Value(30)).current;
+    const containerSize = useRef()
 
     // Animation functions
     const fadeIn = () => {
@@ -77,8 +78,8 @@ const styles = StyleSheet.create({
         transition: "opacity 0.5s",
     },
     windowHolder: {
-        position: "absolute",
         justifyContent: "center",
+        alignItems: "center",
         margin: 30,
     },
     window: {
