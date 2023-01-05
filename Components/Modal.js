@@ -83,9 +83,9 @@ const styles = StyleSheet.create({
     },
     window: {
         width: "100%",
-        padding: 30,
-        borderRadius: 10,
-        backgroundColor: "white",
+        height: "100%",
+        flexDirection: 'row',
+        justifyContent: "center",
     },
     show: {
         opacity: 1,

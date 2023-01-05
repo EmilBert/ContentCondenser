@@ -1,51 +1,52 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Text, Animated, Pressable, StyleSheet, View, ScrollView, Dimensions, SafeAreaView, Image } from 'react-native';
 
-let CARD_WIDTH = Dimensions.get('window').width * 0.8;
-let CARD_HEIGHT = Dimensions.get('window').height * 0.7;
-let SPACING_FOR_CARD_INSET = Dimensions.get('window').width * 0.1 - 10;
-
 const Carousel = ({ children, width, height }) => {
-    //Scrollview ref
+    const [cardWidth, setCardWidth] = useState(Dimensions.get('window').width * 0.8);
+    const [cardHeight, setCardHeight] = useState(Dimensions.get('window').height * 0.7);
+    const [scrollInset, setScrollInset] = useState(Dimensions.get('window').width * 0.1 - 10);
+    
+    if(!cardWidth || !cardHeight || !scrollInset) return(<View></View>);
+
     const scrollViewRef = useRef();
-
-    CARD_WIDTH = width || CARD_WIDTH;
-    CARD_HEIGHT = height || CARD_HEIGHT;
-    SPACING_FOR_CARD_INSET = (Dimensions.get('window').width - width) / 2 || SPACING_FOR_CARD_INSET;
-
+    
     useEffect(() => {
+        setCardWidth(width);
+        setCardHeight(height);
+        setScrollInset((Dimensions.get('window').width - width) / 2);
+        
         //ScrollTo the first item on start
-        scrollViewRef.current.scrollTo({ x: -SPACING_FOR_CARD_INSET, y: 0, animated: false });
+        scrollViewRef.current.scrollTo({ x: -scrollInset, y: 0, animated: false });
+
     }, []);
 
     return (
-        <SafeAreaView style={{ ...styles.container, height: CARD_HEIGHT + 30 }}>
+        <SafeAreaView style={{ ...styles.container, height: cardHeight + 30 }}>
             <ScrollView
                 ref={scrollViewRef}
-                horizontal // Change the direction to horizontal
-                pagingEnabled // Enable paging
-                decelerationRate={0.9} // Disable deceleration
+                horizontal
+                pagingEnabled
+                decelerationRate={0.9}
                 width={"100%"}
                 disableIntervalMomentum={true}
-                snapToInterval={CARD_WIDTH + 10} // Calculate the size for a card including marginLeft and marginRight
-                snapToAlignment={Platform.OS === 'ios' ? 'center' : 'start'} // Snap to the center
+                snapToInterval={cardWidth + 10} // Calculate the size for a card including marginLeft and marginRight
                 directionalLockEnabled={true}
+                snapToAlignment={Platform.OS === 'ios' ? 'center' : 'start'} // Snap to the center of the card (only for iOS)
                 contentInset={{ // iOS ONLY
                     top: 0,
-                    left: SPACING_FOR_CARD_INSET, //SPACING_FOR_CARD_INSET, // Left spacing for the very first card
+                    left: scrollInset || Dimensions.get('window').width * 0.1 - 10, //SPACING_FOR_CARD_INSET, // Left spacing for the very first card
                     bottom: 0,
-                    right: SPACING_FOR_CARD_INSET, //SPACING_FOR_CARD_INSET // Right spacing for the very last card
+                    right: scrollInset || Dimensions.get('window').width * 0.1 - 10, //SPACING_FOR_CARD_INSET // Right spacing for the very last card
                 }}
                 contentContainerStyle={{ // contentInset alternative for Android
-                    paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0 // Horizontal spacing before and after the ScrollView
+                    paddingHorizontal: Platform.OS === 'android' ? scrollInset : 0 // Horizontal spacing before and after the ScrollView
                 }}
                 style={{ ...styles.carousel, paddingTop: 5 }}>
 
                 {children.map((item, index) =>
-                    <View key={index} alt={index} style={{ ...styles.carouselItem, width: CARD_WIDTH, height: CARD_HEIGHT }}>
+                    <View key={index} alt={index} style={{ ...styles.carouselItem, width: cardWidth, height: cardHeight}}>
                         <View style={styles.carouselItemInner}>
                             {item}
-
                         </View>
                     </View>
                 )}
