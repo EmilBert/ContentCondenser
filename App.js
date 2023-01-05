@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, Image, ImageBackground } from 'react-native';
 import Modal from './Components/Modal'
 import Carousel from './Components/Carousel'
 
@@ -11,7 +11,15 @@ export default function App() {
   return (
     <View style={styles.container}>
 
-      <Carousel />
+      <Carousel width={300} height={200}>
+
+        <ImageBackground style={{width: "100%", height: "100%", justifyContent: "center"}} resizeMode={'cover'} source={require('./assets/adaptive-icon.png')}>
+          <Text style={{fontSize: "25", textAlign:"center"}}>1</Text>
+        </ImageBackground>
+        <Text>2</Text>
+        <Text>1</Text>
+        <Text>2</Text>
+      </Carousel>
 
 
       <Pressable onPress={() => setIsModalOpen(true)}>

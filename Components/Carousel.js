@@ -1,31 +1,35 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Text, Animated, Pressable, StyleSheet, View, ScrollView, Dimensions, SafeAreaView } from 'react-native';
+import { Text, Animated, Pressable, StyleSheet, View, ScrollView, Dimensions, SafeAreaView, Image } from 'react-native';
 
-const CARD_WIDTH = Dimensions.get('window').width * 0.8;
-const CARD_HEIGHT = Dimensions.get('window').height * 0.7;
-const SPACING_FOR_CARD_INSET = Dimensions.get('window').width * 0.1 - 10;
+let CARD_WIDTH = Dimensions.get('window').width * 0.8;
+let CARD_HEIGHT = Dimensions.get('window').height * 0.7;
+let SPACING_FOR_CARD_INSET = Dimensions.get('window').width * 0.1 - 10;
 
-const Carousel = (props) => {
-
+const Carousel = ({children, width, height}) => {
     //Scrollview ref
     const scrollViewRef = useRef();
 
+    CARD_WIDTH = width || CARD_WIDTH;
+    CARD_HEIGHT = height || CARD_HEIGHT;
+    SPACING_FOR_CARD_INSET =  (Dimensions.get('window').width - width)/2  || SPACING_FOR_CARD_INSET;
+
     useEffect(() => {
-        //ScrollTo the first item
+        //ScrollTo the first item on start
         scrollViewRef.current.scrollTo({ x: -SPACING_FOR_CARD_INSET, y: 0, animated: false});
     }, []);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={{...styles.container, height:CARD_HEIGHT+30}}>
             <ScrollView 
                 ref={scrollViewRef}
                 horizontal // Change the direction to horizontal
                 pagingEnabled // Enable paging
                 decelerationRate={0.9} // Disable deceleration
+                width = {"100%"}
                 disableIntervalMomentum={true}
                 snapToInterval={CARD_WIDTH + 10} // Calculate the size for a card including marginLeft and marginRight
                 snapToAlignment={Platform.OS === 'ios' ? 'center' : 'start'} // Snap to the center
-                snapToStart={true}
+                directionalLockEnabled={true}
                 contentInset={{ // iOS ONLY
                     top: 0,
                     left: SPACING_FOR_CARD_INSET, //SPACING_FOR_CARD_INSET, // Left spacing for the very first card
@@ -35,49 +39,16 @@ const Carousel = (props) => {
                 contentContainerStyle={{ // contentInset alternative for Android
                     paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0 // Horizontal spacing before and after the ScrollView
                 }}
-                style={styles.carousel}>
-                <View style={styles.carouselItem}>
-                    <Pressable onPress={() => { }}>
+                style={{...styles.carousel, paddingTop:5}}>
+                
+                {children.map((item, index) => 
+                    <View key={index} alt={index} style={{...styles.carouselItem, width: CARD_WIDTH, height: CARD_HEIGHT}}>
                         <View style={styles.carouselItemInner}>
-                            <Text style={styles.carouselItemText}>Item 1</Text>
+                            {item}
+                            
                         </View>
-                    </Pressable>
-                </View>
-                <View style={styles.carouselItem}>
-                    <Pressable onPress={() => { }}>
-                        <View style={styles.carouselItemInner}>
-                            <Text style={styles.carouselItemText}>Item 1</Text>
-                        </View>
-                    </Pressable>
-                </View>
-                <View style={styles.carouselItem}>
-                    <Pressable onPress={() => { }}>
-                        <View style={styles.carouselItemInner}>
-                            <Text style={styles.carouselItemText}>Item 1</Text>
-                        </View>
-                    </Pressable>
-                </View>
-                <View style={styles.carouselItem}>
-                    <Pressable onPress={() => { }}>
-                        <View style={styles.carouselItemInner}>
-                            <Text style={styles.carouselItemText}>Item 1</Text>
-                        </View>
-                    </Pressable>
-                </View>
-                <View style={styles.carouselItem}>
-                    <Pressable onPress={() => { }}>
-                        <View style={styles.carouselItemInner}>
-                            <Text style={styles.carouselItemText}>Item 1</Text>
-                        </View>
-                    </Pressable>
-                </View>
-                <View style={styles.carouselItem}>
-                    <Pressable onPress={() => { }}>
-                        <View style={styles.carouselItemInner}>
-                            <Text style={styles.carouselItemText}>Item 1</Text>
-                        </View>
-                    </Pressable>
-                </View>
+                    </View>
+                )}   
             </ScrollView>
         </SafeAreaView>
     );
@@ -86,28 +57,35 @@ export default Carousel;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        width: "100%",
         backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems: 'center',
+        scrollBarWidth: 0,
     },
     carousel: {
-        scrollBarWidth: 0,
-        overflowX: 'scroll',
+    
+        
     },
     carouselItem: {
-        width: CARD_WIDTH,
-        height: CARD_HEIGHT,
         justifyContent: 'center',
         alignItems: 'center',
         margin: 5,
-        borderRadius: 15,
-        backgroundColor: 'blue',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 4,
+        elevation: 15,
     },
     carouselItemInner: {
-        width: 150,
-        height: 150,
-        backgroundColor: 'green',
+        overflow: 'hidden',
+        borderRadius: 15,
+        width: "100%",
+        height: "100%",
+        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
     },
