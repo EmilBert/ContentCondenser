@@ -3,23 +3,25 @@ import { Text, Animated, Pressable, StyleSheet, View, ScrollView, SafeAreaView, 
 
 
 const Carousel = ({ children, width, height }) => {
-    let CARD_WIDTH = Dimensions.get('window').width * 0.8;
-    let CARD_HEIGHT = Dimensions.get('window').height * 0.7;
-    let SPACING_FOR_CARD_INSET = Dimensions.get('window').width * 0.1 - 10;
+    
+    let screenWidth = Dimensions.get('window').width;
+    let cardWidth   = screenWidth * 0.8;
+    let cardHeight  = screenWidth * 0.7;
+    let edgeSpacing = screenWidth * 0.1 - 10;
 
     const scrollViewRef = useRef();
 
-    CARD_WIDTH = width || CARD_WIDTH;
-    CARD_HEIGHT = height || CARD_HEIGHT;
-    SPACING_FOR_CARD_INSET = (Dimensions.get('window').width - width) / 2 || SPACING_FOR_CARD_INSET;
+    cardWidth   = width || cardWidth;
+    cardHeight  = height || cardHeight;
+    edgeSpacing = (Dimensions.get('window').width - width) / 2 || edgeSpacing;
 
     useEffect(() => {
         //ScrollTo the first item on start
-        scrollViewRef.current.scrollTo({ x: -SPACING_FOR_CARD_INSET, y: 0, animated: false });
-
+        scrollViewRef.current.scrollTo({ x: -edgeSpacing, y: 0, animated: false });
     }, []);
+
     return (
-        <SafeAreaView style={{ ...styles.container, height: CARD_HEIGHT + 30 }}>
+        <SafeAreaView style={{ ...styles.container, height: cardHeight + 30 }}>
             <ScrollView
                 ref={scrollViewRef}
                 horizontal
@@ -27,22 +29,16 @@ const Carousel = ({ children, width, height }) => {
                 decelerationRate={0.9}
                 width={"100%"}
                 disableIntervalMomentum={true}
-                snapToInterval={CARD_WIDTH + 10} // Calculate the size for a card including marginLeft and marginRight
+                snapToInterval={cardWidth + 10}
                 directionalLockEnabled={true}
-                snapToAlignment={Platform.OS === 'ios' ? 'center' : 'start'} // Snap to the center of the card (only for iOS)
-                contentInset={{ // iOS ONLY
-                    top: 0,
-                    left: SPACING_FOR_CARD_INSET, //SPACING_FOR_CARD_INSET, // Left spacing for the very first card
-                    bottom: 0,
-                    right: SPACING_FOR_CARD_INSET, //SPACING_FOR_CARD_INSET // Right spacing for the very last card
+                snapToAlignment={Platform.OS === 'ios' ? 'center' : 'start'} 
+                contentInset={{ top: 0,left: edgeSpacing,bottom: 0,right: edgeSpacing,}} // for iOS
+                contentContainerStyle={{ // for Android
+                    paddingHorizontal: Platform.OS === 'android' ? edgeSpacing : 0 
                 }}
-                contentContainerStyle={{ // contentInset alternative for Android
-                    paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0 // Horizontal spacing before and after the ScrollView
-                }}
-                style={{ ...styles.carousel, paddingTop: 5 }}>
-
+                style={{ paddingTop: 5 }}>
                 {children.map((item, index) =>
-                    <View key={index} alt={index} style={{ ...styles.carouselItem, width: CARD_WIDTH, height: CARD_HEIGHT, transform: [{scale: 1}]}}>
+                    <View key={index} alt={index} style={{ ...styles.carouselItem, width: cardWidth, height: cardHeight}}>
                         <View style={styles.carouselItemInner}>
                             {item}
                         </View>
@@ -63,6 +59,7 @@ const styles = StyleSheet.create({
         scrollBarWidth: 0,
     },
     carouselItem: {
+        transform: [{scale: 1}],
         justifyContent: 'center',
         alignItems: 'center',
         margin: 5,

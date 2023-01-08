@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
-import Carousel from './Components/Carousel'
-import Accordion from './Components/Accordion'
+import { StyleSheet, Text, View, ImageBackground, ScrollView, Image } from 'react-native';
+import Carousel from './Components/Carousel';
+import Accordion from './Components/Accordion';
 
 //Image imports
-import mountain from './assets/mountain.jpg'
-import workboard from './assets/workboard.jpg'
+import mountain from './assets/mountain.jpg';
+import workboard from './assets/workboard.jpg';
+import accordion from './assets/accordion.jpg';
 
 
 const Card1 = ({ title, desc, image }) => {
@@ -20,79 +21,95 @@ const Card1 = ({ title, desc, image }) => {
   )
 }
 
-const Card2 = ({ title, desc, image }) => {
+const Card2 = ({ title, desc, backgroundColor }) => {
   return (
-    <ImageBackground source={image} style={{ width: "100%", height: "100%", justifyContent: "center" }}>
+    <View style={{ width: "100%", height: "100%", padding: 15, justifyContent: "center", backgroundColor:backgroundColor }}>
       <Text style={{ fontSize: 25, fontWeight: "bold", textAlign: "center", color: "white" }}>{title}</Text>
       <Text style={{ textAlign: "center", color: "white" }}>{desc}</Text>
-    </ImageBackground>
+    </View>
   )
 }
 export default function App() {
   return (
-    <ScrollView>
-      <Text style={styles.title}>This is ContentCondenser</Text>
-      <Text style={styles.desc}>Authors: Emil Bertholdsson & Linus Karlsson</Text>
+    <View style={{paddingBottom: 60}}>
+      <View style={{marginTop:40, padding:20, borderColor: "navy", borderBottomWidth:2}}>
+        <Text style={styles.title}>ContentCondenser</Text>
+        <Text style={styles.desc}>Authors: Emil Bertholdsson & Linus Karlsson</Text>
+      </View>
+    <ScrollView style={{marginBottom:100}}>
+
+      
+      <Text style={styles.componentTitle}>The Accordion</Text>
+      
+
       <Accordion
         items={[
           {
-            title: "Home",
-            content: <Text>Hej</Text>,
-          },
-          {
             title: "About",
             content:
-              <View>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
-                <Text>Emil är bäst</Text>
+              <View style={{padding:20}}>
+                <Text>You just interacted with our accordion menu.</Text>
+                <Text>In this menu, you can put any content you want. For example, take a look at the next accordion tab.</Text>
               </View>,
           },
           {
-            title: "Our products",
-            content: <Text>Jag ska slå Linus i codewars</Text>,
+            title: "Customize the content",
+            content: 
+              <View style={{padding:20}}>
+                <Image source={accordion} style={{resizeMode:"contain", height:500, width: "100%", marginBottom:20}}/>
+                <Text style = {{fontSize: 22}}>Add whatever content you would like!</Text>
+                <Text style = {{paddingTop: 10}}>You can fill your accordion content with whatever components you'd like. You can have subpages like this, or nested submenus like in the next example.</Text>
+              </View>
           },
           {
-            title: "Contact",
+            title: "Nested components",
             content:
-              < ScrollView >
-                <View contentContainerStyle={styles.container}>
-                  <Text style={styles.title}>This is the Carousel</Text>
-                  <Carousel height={300}>
-                    <Card1 image={mountain} title="The carousel" desc="Swipe the carousel to move it!" />
-                    <Card1 image={workboard} title="Wow!, that was smooth" desc="" />
-                    <Text style={{ textAlign: 'center', paddingHorizontal: 15 }}>You can put what you want in the carousel. Even simple text components.</Text>
-                  </Carousel>
-
-                  <Text style={styles.desc}>You can modify the carousels width and height!</Text>
-                  <Carousel height={200} width={200}>
-                    <Card2 image={mountain} title="Customizable" desc="Modify the size of the slides!" />
-                    <Card2 image={workboard} title="Wow!, that was smooth" desc="" />
-                  </Carousel>
-
-                  <Carousel>
-                    <Card2 image={mountain} title="Customizable" desc="Modify the size of the slides!" />
-                    <Card2 image={workboard} title="Wow!, that was smooth" desc="" />
-                  </Carousel>
-                </View>
-              </ScrollView >,
-          },
+            <Accordion
+            numbered={true}
+            textStyle={{fontSize: 15}}
+            items={[
+              {
+                title: "Accordion inside an accordion",
+                content:
+                  <View style = {{padding: 20}}>
+                    <Text>Ain't that something!</Text>
+                  </View>
+              },
+              {
+                title: "Wow this Accordion also supports numbering!",
+                content:
+                  <View style = {{padding: 20}}>
+                    <Text>Just set numbered=true!</Text>
+                  </View>
+              },
+              {
+                title: "Style the Accordion to your liking!",
+                content:
+                  <View style = {{padding: 20}}>
+                    <Text>With the props containerStyle and textStyle you can pass your style to the component!</Text>
+                  </View>
+              }
+            ]}
+            />
+          }
         ]} />
+        <View contentContainerStyle={styles.container}>
+        <Text style={styles.componentTitle}>The Carousel</Text>
+          <Carousel height={300}>
+            <Card1 image={mountain} title="The carousel" desc="Swipe the carousel to move it!" />
+            <Card1 image={workboard} title="Wow!, that was smooth" desc="" />
+            <Text style={{ textAlign: 'center', paddingHorizontal: 15 }}>You can put what you want in the carousel. Even simple text components.</Text>
+          </Carousel>
+
+          <Text style={styles.desc}></Text>
+          <Carousel height={150} width={200}>
+            <Card2 backgroundColor={"navy"} title="Customizable" desc="Modify the size of the slides!" />
+            <Card2 backgroundColor={"blue"} title="" desc="Height and width are seperate variables." />
+            <Card2 backgroundColor={"cornflowerblue"} title="Thanks!" desc="That's it for this demo application." />
+          </Carousel>
+        </View>
     </ScrollView>
+    </View>
   );
 }
 
@@ -105,6 +122,12 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
+    marginTop: 10,
+    fontSize: 40,
+    fontWeight: "bold",
+  },
+  componentTitle: {
+    padding: 12,
     marginTop: 10,
     fontSize: 25,
     fontWeight: "bold",

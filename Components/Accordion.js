@@ -43,20 +43,17 @@ const AccordionItem = ({ open, title, content, onClick, index, containerStyle, t
             setTimeout(() => setHideContent(true), 200);
         }
     }, [open, index]);
-
-    
-
     return (
         <View>
             <Pressable onPress={() => { onClick(index)}}>
                 <View style={{ ...styles.titlePressable, ...containerStyle }}>
-                    <Text style={{ ...styles.title, ...textStyle }}> {title}</Text>
+                    <Text style={{ ...styles.title, ...textStyle }}>{title}</Text>
                     <Image style={open == index ? { tintColor: "gray", resizeMode: "cover", height: "auto", ...styles.rotate } : { tintColor: "gray", resizeMode: "cover", height: "auto" }} source={expand}></Image>
                 </View>
             </Pressable>
 
             <View onPress={LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)} style={!hideContent ? {overflow:"hidden"} : {overflow:"hidden",height: 0 }}>
-                <Animated.View style={open != index ? {opacity:fadeAnim, position:"absolute"} : {opacity:fadeAnim}  }>
+                <Animated.View style={open != index ? {width:"100%", opacity:fadeAnim, position:"absolute"} : {width:"100%", opacity:fadeAnim}  }>
                     {content}
                 </Animated.View>
             </View>
@@ -73,7 +70,7 @@ const Accordion = ({ items, containerStyle, textStyle, numbered = false }) => {
         openIndex != index ? setOpenIndex(index) : setOpenIndex(-1);
     }
     return (
-        <View>
+        <View style={{borderBottomColor:"lightgrey", borderBottomWidth:1}}>
             {items.map((item, index) =>
                 <AccordionItem
                     open={openIndex}
