@@ -1,59 +1,65 @@
 
-import React, { useRef, useEffect, useState } from 'react';
-import { UIManager, FlatList, Text, Animated, Pressable, StyleSheet, View, Image, LayoutAnimation } from 'react-native';
+import React, { useRef, useEffect, useState} from 'react';
+import {UIManager, Text, Animated, Pressable, StyleSheet, View, Image, LayoutAnimation } from 'react-native';
+import expand from '../assets/expand.png'
+
 
 if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
-        UIManager.setLayoutAnimationEnabledExperimental(true);
+      UIManager.setLayoutAnimationEnabledExperimental(true);
     }
 }
-import expand from '../assets/expand.png'
+
 
 const AccordionItem = ({ open, title, content, onClick, index, containerStyle, textStyle }) => {
+    
+    const [hideContent, setHideContent] = useState(true);
+    const fadeAnim = useRef(new Animated.Value(0)).current;
 
-    const animationController = useRef(new Animated.Value(0).current);
-
-    const toggleAnimation = {
-        duration: 300,
-        update: {
-            duration: 300,
-            property: LayoutAnimation.Properties.opacity,
-            type: LayoutAnimation.Types.easeInEaseOut,
-        },
-        delete: {
-            duration: 300,
-            property: LayoutAnimation.Properties.opacity,
-            type: LayoutAnimation.Types.easeInEaseOut,
-        },
-    }
-
-
-    const toggleItem = () => {
-        const config = {
-            duration: 300,
-            toValue: index == open ? 0 : 1,
+    // Animation functions
+    const fadeIn = () => {
+        Animated.timing(fadeAnim, {
             useNativeDriver: true,
-        };
-        console.log("toggleItem");
-        Animated.timing(animationController, config).start();
-        LayoutAnimation.configureNext(toggleAnimation);
+            toValue: 1,
+            duration: 300,
+        }).start();  
+    };
+    const fadeOut = () => {
+        Animated.timing(fadeAnim, {
+            useNativeDriver: true,
+            toValue: 0,
+            duration: 300,
+        }).start();
+    };
 
-    }
+    // Start animation when modal is opened or closed
+    useEffect(() => {
+        if (open == index) {
+            setHideContent(false);
+            fadeIn();
+        } else {
+            fadeOut();
+            //Set interval to wait for animation to finish before hiding modal
+            setTimeout(() => setHideContent(true), 200);
+        }
+    }, [open, index]);
+
+    
 
     return (
         <View>
-            <Pressable onPress={() => { onClick(index); toggleItem }}>
+            <Pressable onPress={() => { onClick(index)}}>
                 <View style={{ ...styles.titlePressable, ...containerStyle }}>
-                    <Text style={{ ...styles.title, ...textStyle }}>{title}</Text>
+                    <Text style={{ ...styles.title, ...textStyle }}> {title}</Text>
                     <Image style={open == index ? { tintColor: "gray", resizeMode: "cover", height: "auto", ...styles.rotate } : { tintColor: "gray", resizeMode: "cover", height: "auto" }} source={expand}></Image>
                 </View>
             </Pressable>
 
-            <Animated.View style={open == index ? { opacity: 1, height: animationController.current } : { opacity: 0, height: 0 }}>
-                <View>
+            <View onPress={LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)} style={!hideContent ? {overflow:"hidden"} : {overflow:"hidden",height: 0 }}>
+                <Animated.View style={open != index ? {opacity:fadeAnim, position:"absolute"} : {opacity:fadeAnim}  }>
                     {content}
-                </View>
-            </Animated.View>
+                </Animated.View>
+            </View>
         </View>
     );
 }

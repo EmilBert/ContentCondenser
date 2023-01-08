@@ -44,6 +44,22 @@ export default function App() {
             content:
               <View>
                 <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
+                <Text>Emil är bäst</Text>
               </View>,
           },
           {
