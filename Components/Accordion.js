@@ -9,8 +9,6 @@ if (Platform.OS === 'android') {
       UIManager.setLayoutAnimationEnabledExperimental(true);
     }
 }
-
-
 const AccordionItem = ({ open, title, content, onClick, index, containerStyle, textStyle }) => {
     
     const [hideContent, setHideContent] = useState(true);

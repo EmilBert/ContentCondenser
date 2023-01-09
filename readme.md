@@ -13,11 +13,12 @@ ContentCondenser is a navigation component library that includes an accordion me
 
 ### Installing
 
-*Install via yarn or npm when we have uploaded it there*
+* Download the repos components folder and add it to your project files
 
 * Import the components into your project!
 ```jsx
-import {Accordion, Carousel} from 'content-condenser';
+import Carousel from './Components/Carousel';
+import Accordion from './Components/Accordion';
 ```
 ## Accordion 🪗
 In many cases, content can be organized in sections and subsections. For such cases, accordion menues are handy as a way to condense an otherwise very large list.  

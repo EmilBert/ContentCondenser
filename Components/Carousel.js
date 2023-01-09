@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Text, Animated, Pressable, StyleSheet, View, ScrollView, SafeAreaView, Image, Dimensions} from 'react-native';
+import React, { useRef, useEffect} from 'react';
+import {StyleSheet, View, ScrollView, SafeAreaView, Dimensions} from 'react-native';
 
 
 const Carousel = ({ children, width, height }) => {
