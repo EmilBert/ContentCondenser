@@ -3,7 +3,6 @@ import React, { useRef, useEffect, useState} from 'react';
 import {UIManager, Text, Animated, Pressable, StyleSheet, View, Image, LayoutAnimation } from 'react-native';
 import expand from '../assets/expand.png'
 
-
 if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
       UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -30,28 +29,26 @@ const AccordionItem = ({ open, title, content, onClick, index, containerStyle, t
         }).start();
     };
 
-    // Start animation when modal is opened or closed
+    // Start animation when accordion item is opened or closed
     useEffect(() => {
         if (open == index) {
             setHideContent(false);
             fadeIn();
         } else {
             fadeOut();
-            //Set interval to wait for animation to finish before hiding modal
-            setTimeout(() => setHideContent(true), 200);
+            setHideContent(true)
         }
-    }, [open, index]);
+    }, [open]);
     return (
         <View>
             <Pressable onPress={() => { onClick(index)}}>
                 <View style={{ ...styles.titlePressable, ...containerStyle }}>
                     <Text style={{ ...styles.title, ...textStyle }}>{title}</Text>
-                    <Image style={open == index ? { tintColor: "gray", resizeMode: "cover", height: "auto", ...styles.rotate } : { tintColor: "gray", resizeMode: "cover", height: "auto" }} source={expand}></Image>
+                    <Image style={hideContent ? { tintColor: "gray", resizeMode: "cover", height: "auto" }:{ tintColor: "gray", resizeMode: "cover", height: "auto", ...styles.rotate }} source={expand}></Image>
                 </View>
             </Pressable>
-
-            <View onPress={LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)} style={!hideContent ? {overflow:"hidden"} : {overflow:"hidden",height: 0 }}>
-                <Animated.View style={open != index ? {width:"100%", opacity:fadeAnim, position:"absolute"} : {width:"100%", opacity:fadeAnim}  }>
+            <View onPress={LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)} style={hideContent ?  {overflow:"hidden",height: 0 } : {overflow:"hidden"}}>
+                <Animated.View style={hideContent? {width:"100%", opacity:fadeAnim, position:"absolute"} : {width:"100%", opacity:fadeAnim}}>
                     {content}
                 </Animated.View>
             </View>
@@ -62,7 +59,6 @@ const AccordionItem = ({ open, title, content, onClick, index, containerStyle, t
 const Accordion = ({ items, containerStyle, textStyle, numbered = false }) => {
     // No accordion menu open by default, set idx to -1
     const [openIndex, setOpenIndex] = useState(-1);
-
     // Update state on click of any accordion item
     const handleClick = (index) => {
         openIndex != index ? setOpenIndex(index) : setOpenIndex(-1);
